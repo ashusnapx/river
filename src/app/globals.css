@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #fbf6e8;
+  --color-paper-deep: #f3ead2;
+  --color-rule: #cfdcee;
+  --color-margin: #e7a3a0;
+  --color-ink: #24211d;
+  --color-blue-ink: #1e3f94;
+  --color-blue-soft: #4f6fc4;
+  --color-red-ink: #c4372c;
+  --color-green-ink: #1d7449;
+  --color-pencil: #6e6a64;
+  --color-hl: #ffe14d;
+  --color-hl-pink: #ff9ec7;
+  --color-hl-green: #9be7a4;
+  --color-sticky: #fff3a6;
+  --color-sticky-blue: #d7ebff;
+  --color-sticky-pink: #ffd9e4;
+  --color-water: #2c64c8;
+
+  --font-hand: var(--font-kalam), "Segoe Print", cursive;
+  --font-pen: var(--font-caveat), "Segoe Print", cursive;
+  --font-marker: var(--font-marker-face), "Segoe Print", cursive;
+  --font-pencil: var(--font-reenie), "Segoe Print", cursive;
+
+  --animate-wiggle: wiggle 0.5s ease-in-out;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2deg); }
+  75% { transform: rotate(2deg); }
+}
+
+:root {
+  --rule-gap: 2rem;
+  /* paper grain, drawn once as an inline SVG noise tile */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* tilted notes and taped cards may poke past the edge; never let them cause sideways scroll */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  background-color: var(--color-paper);
+  background-image: var(--grain);
+  color: var(--color-ink);
+  font-family: var(--font-hand);
+  font-size: 1.125rem;
+  line-height: var(--rule-gap);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-hl) 70%, transparent);
+}
+
+/* A ruled notebook page with a red margin line. */
+.ruled {
+  background-image:
+    linear-gradient(to right, transparent 0 calc(var(--margin-x, 3.25rem) - 1px), var(--color-margin) calc(var(--margin-x, 3.25rem) - 1px) calc(var(--margin-x, 3.25rem) + 1px), transparent calc(var(--margin-x, 3.25rem) + 1px)),
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--rule-gap) - 1px), var(--color-rule) calc(var(--rule-gap) - 1px) var(--rule-gap));
+  background-attachment: local;
+}
+@media (max-width: 640px) {
+  .ruled { --margin-x: 1.25rem; }
+}
+
+/* Graph paper for maps and sketches. */
+.graph {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-rule) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 55%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---------- pen marks (see src/lib/markup.tsx) ---------- */
+.pen-heavy {
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.pen-hl {
+  margin: 0 -0.15em;
+  padding: 0 0.2em;
+  border-radius: 0.8em 0.3em;
+  background: transparent;
+  background-image:
+    linear-gradient(100deg, transparent 0.9%, color-mix(in srgb, var(--color-hl) 75%, transparent) 2.4%, color-mix(in srgb, var(--color-hl) 55%, transparent) 5.8%, color-mix(in srgb, var(--color-hl) 35%, transparent) 93%, color-mix(in srgb, var(--color-hl) 75%, transparent) 96%, transparent 98%),
+    linear-gradient(183deg, transparent 0%, color-mix(in srgb, var(--color-hl) 30%, transparent) 7.9%, transparent 15%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.pen-underline {
+  padding-bottom: 0.12em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='8' viewBox='0 0 60 8'%3E%3Cpath d='M1 5.5 C 10 3, 18 6.5, 30 4.6 S 50 3.2, 59 5' fill='none' stroke='%23c4372c' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 60px 8px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.pen-red {
+  color: var(--color-red-ink);
+  font-weight: 700;
+}
+
+.pen-green {
+  color: var(--color-green-ink);
+}
+
+.river-link {
+  color: var(--color-blue-ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.river-link:hover {
+  text-decoration-style: solid;
+  color: var(--color-water);
+}
+
+/* Glossary words: a dotted pencil underline that invites a hover or tap. */
+.term {
+  display: inline;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in srgb, var(--color-blue-ink) 65%, transparent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  cursor: help;
+  border-radius: 3px;
+  transition: background-color 120ms;
+}
+.term:hover,
+.term[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--color-sticky-blue) 80%, transparent);
+  text-decoration-style: solid;
+}
+
+/* Focus rings that look drawn, but stay clearly visible. */
+:focus-visible {
+  outline: 2.5px dashed var(--color-blue-ink);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* tape strip on sticky notes */
+.tape {
+  position: absolute;
+  width: 6.5rem;
+  height: 1.6rem;
+  background: color-mix(in srgb, #f7f0d6 70%, transparent);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  border-left: 1px dashed rgb(0 0 0 / 0.08);
+  border-right: 1px dashed rgb(0 0 0 / 0.08);
+}
+
+.sticky-shadow {
+  box-shadow:
+    0 1px 1px rgb(60 40 0 / 0.08),
+    0 8px 18px -10px rgb(60 40 0 / 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
