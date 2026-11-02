@@ -26,7 +26,7 @@
     "d3-geo": "^3.1.1",
     "eslint": "^9",
     "eslint-config-next": "^16.4.2",
-    "mapshaper": "^0.6.121",
+    "mapshaper": "^0.7.88",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
     "typescript": "^5"
